@@ -1,0 +1,18 @@
+name: GitOps Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-renv@v2
+      
+      - name: Validate Environment and Run Scripts
+        run: |
+          Rscript -e 'renv::restore()'
+          Rscript -e 'print("GitOps automation trigger complete.")'
