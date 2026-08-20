@@ -1,24 +1,23 @@
-name: GitOps Pipeline
+name: Secure Infrastructure GitOps Workflow
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  execute-secure-infrastructure:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: r-lib/actions/setup-r@v2
-      
-      - name: Install system dependencies
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup R Environment
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Restore renv Environment
+        uses: r-lib/actions/setup-renv@v2
+
+      - name: Execute Infrastructure Script
         run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake libglpk-dev libx11-dev pandoc
-      
-      - uses: r-lib/actions/setup-renv@v2
-      
-      - name: Validate Environment and Run Scripts
-        run: |
-          Rscript -e 'renv::restore()'
-          Rscript -e 'print("GitOps automation trigger complete.")'
+          Rscript -e 'print("GitOps automated deployment pipeline triggered.")'
+          Rscript "CO3 Part 2.R"
